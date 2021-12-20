@@ -1,0 +1,11 @@
+1. 아래 사이트 status active 상태 확인
+https://appcodelabs.com/introduction-to-iot-build-an-mqtt-server-using-raspberry-pi
+
+2. 아래 사이트에서 conf 파일에 IP접속 가능토록 내용 추가
+https://www.gloriouscoding.com/fa639ca4-0b97-4345-8dd7-66722ecdf421
+
+3.  powershell에서 .\mosquitto_sub -h 192.168.0.58 -t TEST
+
+4. 라즈베리파이에서 mosquitto_pub -d -t TEST -m "HI" 보내기
+
+5. X-SCADA 연결 
