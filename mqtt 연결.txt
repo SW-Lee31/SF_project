@@ -9,3 +9,19 @@ https://www.gloriouscoding.com/fa639ca4-0b97-4345-8dd7-66722ecdf421
 4. 라즈베리파이에서 mosquitto_pub -d -t TEST -m "HI" 보내기
 
 5. X-SCADA 연결 
+
+-아두이노 192.168.0.140
+-라즈베리 192.168.0.135
+
+ #########################BT 연결##########################
+scan on
+devices
+pair XX:XX:XX:XX:XX:XX
+trust XX:XX:XX:XX:XX:XX
+quit
+페어 및 신뢰권한부여
+
+sudo rfcomm bind /dev/rfcomm0 XX:XX:XX:XX:XX:XX 1
+해당 주소에 바인딩
+
+출처: https://raspberrypi.stackexchange.com/questions/78155/using-dev-rfcomm0-in-raspberry-pi

@@ -23,9 +23,9 @@
 
 // Update these with values suitable for your network.
 
-const char* ssid = "연결와이파이 명";
-const char* password = "와이파이 pw";
-const char* mqtt_server = "연결 ip";
+const char* ssid = "iptime";
+const char* password = "asdf1234";
+const char* mqtt_server = "192.168.0.136";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -35,7 +35,6 @@ char msg[MSG_BUFFER_SIZE];
 int value = 0;
 
 void setup_wifi() {
-
   delay(10);
   // We start by connecting to a WiFi network
   Serial.println();
