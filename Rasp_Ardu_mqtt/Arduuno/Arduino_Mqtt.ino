@@ -25,7 +25,7 @@
 
 const char* ssid = "iptime";
 const char* password = "asdf1234";
-const char* mqtt_server = "192.168.0.8";
+const char* mqtt_server = "192.168.0.135";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -105,7 +105,7 @@ void setup() {
   pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
   Serial.begin(115200);
   setup_wifi();
-  client.setServer(mqtt_server, 5500);
+  client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
 }
 
