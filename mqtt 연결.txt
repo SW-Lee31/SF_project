@@ -10,12 +10,16 @@ https://www.gloriouscoding.com/fa639ca4-0b97-4345-8dd7-66722ecdf421
 
 5. X-SCADA 연결 
 
+
+####################### IP 확인결과 ##########################
+
 -아두이노(esp8826-12e) (녹색) -> 192.168.0.142
 -아두이노(esp8826-12e) (녹색) 192.168.0.73 -> 변동가능
 	ip번호 확인 ESP8266WiFi -> WiFiManualWebServer 시행 시 확인 가능
 -라즈베리 192.168.0.135
 
  #########################BT 연결##########################
+
 scan on
 devices
 pair XX:XX:XX:XX:XX:XX
@@ -27,3 +31,7 @@ sudo rfcomm bind /dev/rfcomm0 XX:XX:XX:XX:XX:XX 1
 해당 주소에 바인딩
 
 출처: https://raspberrypi.stackexchange.com/questions/78155/using-dev-rfcomm0-in-raspberry-pi
+
+############################ 라즈베리파이 MQTT(py)연결 #######################
+
+paho 라이브러리 설치 및 파이썬 코드 작성
