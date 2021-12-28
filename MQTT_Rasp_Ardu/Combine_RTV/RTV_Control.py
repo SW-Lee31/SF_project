@@ -12,9 +12,25 @@ PUB_ID = 'py_pub'
 HOST_AD = ''
 PORT_AD = 8090
 
-# 수신 메시지 저장공간
+# Vision에서 작성한 파일 주소
+bin_path = ''
+
+# TCP/IP 수신 메시지 저장공간
 BUF_SIZE = 1024
 rcv_msg = ''
+
+## Vision에서 쓴 bin파일 읽어들이기 (Timer)
+def Read_binary():
+    read_timer = threading.Timer(5, Read_binary)
+
+    # binfile 데이터 읽기
+    file = open(bin_path, 'r')
+    vision_data = file.readline()
+    print(vision_data)
+    file.close()
+
+    # 함수 안에서 실행 (함수 밖에서 .start()실행 시 한 번 실행)
+    read_timer.start()
 
 ## TCP/IP Server
 def acceptClient():
@@ -57,36 +73,6 @@ def bUser(cs_sock, msg):
         except Exception as x:
             print('send 에러: ', x)
             break
-
-"""
-def acceptClient():
-    while Ture:
-        try:
-            servSocket = socket(AF_INET, SOCK_STREAM)
-            servSocket.bind((HOST_AD, PORT_AD))
-            servSocket.listen(5)
-            print("서버 대기 중..")
-
-            conn, addr = servSocket.accept()
-            print("connected successs! (AD_Client) : " + addr)
-            thread_rcv_data = threading.Thread(target=rcv_data, args=conn)
-        except Exception as e:
-            print("accept 에러 : ", e)
-            break
-
-def rcv_data(client):
-    while True:
-        try:
-            data = client.recv(BUF_SIZE)
-            if not data:
-                break
-            # conn.sendall(data)
-            rcv_msg = data
-            #client.close()
-        except Exception as e:
-            print("rcv 에러 : ", e)
-            break;
-"""
 
 ## MQTT Publisher
 def connect_mqtt():

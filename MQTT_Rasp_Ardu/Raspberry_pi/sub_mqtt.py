@@ -5,6 +5,7 @@ port = 1883
 topic = 'test/test1'
 sub_id = f'py_sub'
 
+# MQTT 연결 콜백함수
 def connect_mqtt() -> mqtt_client:
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
@@ -17,6 +18,7 @@ def connect_mqtt() -> mqtt_client:
     sub.connect(broker_addr, port)
     return sub
 
+# 구독 연결 콜백함수
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         print(f"Received '{msg.payload.decode()}' from '{msg.topic}' topic")
@@ -27,6 +29,7 @@ def subscribe(client: mqtt_client):
 def run():
     sub = connect_mqtt()
     subscribe(sub)
+    # Loop (내장 스레드)
     sub.loop_forever()
 
 if __name__ == '__main__':
