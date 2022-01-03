@@ -1,11 +1,14 @@
 import socket
 import threading
 import sys
-import threading
 import time
 import paho.mqtt.client as mqtt_client
+import vision as v
+from vision import color_value
+from multiprocessing import Process
+import os
 
-BORKER_ADDR = '192.168.0.135'
+BORKER_ADDR = '192.168.0.32'
 PORT_RPI = 1883
 TOPIC = 'test/test1'
 PUB_ID = 'py_pub'
@@ -13,25 +16,22 @@ HOST_AD = ''
 PORT_AD = 8090
 
 # Vision에서 작성한 파일 주소
-bin_path = ''
+bin_path = 'data.bin'
+# Vision bin파일 인코딩
+encoding_data = 'utf-8'
+# Vision data
+vision_data = ''
 
 # TCP/IP 수신 메시지 저장공간
 BUF_SIZE = 1024
 rcv_msg = ''
 
-## Vision에서 쓴 bin파일 읽어들이기 (Timer)
-def Read_binary():
-    read_timer = threading.Timer(5, Read_binary)
 
-    # binfile 데이터 읽기
-    file = open(bin_path, 'r')
-    vision_data = file.readline()
-    print(vision_data)
-    file.close()
-
-    # 함수 안에서 실행 (함수 밖에서 .start()실행 시 한 번 실행)
-    read_timer.start()
-
+def Vision_activate():
+    while True:
+        print(v.processCam())
+        
+    
 ## TCP/IP Server
 def acceptClient():
     while True:
@@ -89,17 +89,17 @@ def connect_mqtt():
 
 # Publish(send) 데이터 송신 함수(Call back)
 def publish(client):
-    msg_cnt = 0
 
     while True:
         time.sleep(5)
-        # msg = f"messages : 안녕하세여 from Pub{msg_cnt}"
-        msg = rcv_msg
+        msg = f"messages : 안녕하세여 from Pub"
+        # msg = rcv_msg
         result = client.publish(TOPIC, msg)
         status = result[0]
 
         if status == 0:
-            print(f"send '{msg}' to topic '{TOPIC}'")
+            if rcv_msg != '':
+                print(f"send '{msg}' to topic '{TOPIC}'")
         else:
             print(f"failed to send message")
 
@@ -109,6 +109,9 @@ def run():
     publish(pub)
 
 if __name__ == '__main__':
+    Vision_P = Process(target=Vision_activate)
+    Vision_P.start()
+    
     try:
         connList = []  # 비어있는 리스트 생성 TCP/IP Client 담는 공간
 
@@ -118,6 +121,9 @@ if __name__ == '__main__':
         print('Server in waiting..(AD_CONN)')
         threadServ = threading.Thread(target=acceptClient)
         threadServ.start()
+        
+        
+        
 
         run()
     except KeyboardInterrupt:
