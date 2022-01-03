@@ -11,3 +11,5 @@ install i2c-tools
 i2cdetect (외부 i2c 장치 연결여부 확인)
 i2cdetect -y 1
 
+track_bar_ex -> 로봇 팔 제어 GUI 구현(센서 값 읽어들이기 용이 c#과의 연계는 추후)
+
