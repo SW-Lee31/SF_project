@@ -35,3 +35,7 @@ sudo rfcomm bind /dev/rfcomm0 XX:XX:XX:XX:XX:XX 1
 ############################ 라즈베리파이 MQTT(py)연결 #######################
 
 paho 라이브러리 설치 및 파이썬 코드 작성
+
+※Warning
+	파이썬에서 global 변수 사용 지양
+	모듈화
