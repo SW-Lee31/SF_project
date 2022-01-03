@@ -117,12 +117,12 @@ class Window(QWidget):
         self.text5.setText(str(val5))
         self.text6.setText(str(val6))     
         
-        Arm.Arm_serial_servo_write(1, val, 500)
-        Arm.Arm_serial_servo_write(2, val2, 500)
-        Arm.Arm_serial_servo_write(3, val3, 500)
-        Arm.Arm_serial_servo_write(4, val4, 500)
-        Arm.Arm_serial_servo_write(5, val5, 500)
-        Arm.Arm_serial_servo_write(6, val6, 500)   
+        Arm.Arm_serial_servo_write(6, val, 500)
+        Arm.Arm_serial_servo_write(5, val2, 500)
+        Arm.Arm_serial_servo_write(4, val3, 500)
+        Arm.Arm_serial_servo_write(3, val4, 500)
+        Arm.Arm_serial_servo_write(2, val5, 500)
+        Arm.Arm_serial_servo_write(1, val6, 500)   
             
 def test():
     App = QApplication(sys.argv)
