@@ -3,8 +3,8 @@ import threading
 import sys
 import time
 import paho.mqtt.client as mqtt_client
-import vision as v
-from vision import color_value
+import Vision as Vi
+import Ctrl as Rc
 from multiprocessing import Process
 import os
 
@@ -27,9 +27,11 @@ BUF_SIZE = 1024
 rcv_msg = ''
 
 
-def Vision_activate():
-    while True:
-        print(v.processCam())
+def Vision_read():
+    Vision_data = threading.Timer(0.3, Vision_read)
+
+    if Vi.processCam() == 'red':
+        Rc.
         
     
 ## TCP/IP Server
