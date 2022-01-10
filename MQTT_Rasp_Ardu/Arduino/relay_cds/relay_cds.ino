@@ -1,30 +1,55 @@
-int cds = A0;
-int relay = D1;
+int cdsA = A0;
+int cdsB = A1;
+int relayA = 7;
+int relayB = 6;
 
-bool stop_flag = false;
+bool stop_flagA = false;
+bool stop_flagB = false;
 
 void setup() {
-  pinMode(relay, OUTPUT);
+  pinMode(relayA, OUTPUT);
+  pinMode(relayB, OUTPUT);
   Serial.begin(115200);
 }
 
 void loop() {
-  int light = analogRead(cds);
-  Serial.println(light);
+  int lightA = analogRead(cdsA);
+  int lightB = analogRead(cdsB);
+  Serial.print('A');
+  Serial.print(lightA);
+  Serial.print('B');
+  Serial.println(lightB);
   
-  if (light > 110){
-    if(stop_flag == false){
+  
+  if (lightA > 150){
+    if(stop_flagA == false){
       delay(500);
-      digitalWrite(relay, LOW);
-      stop_flag = true;
+      digitalWrite(relayA, LOW);
+      stop_flagA = true;
     }
-    if(stop_flag == true){
-      digitalWrite(relay, LOW);
+    if(stop_flagA == true){
+      digitalWrite(relayA, LOW);
     }
     
   }
   else{
-    stop_flag = false;
-    digitalWrite(relay, HIGH);
+    stop_flagA = false;
+    digitalWrite(relayA, HIGH);
+  }  
+
+  if (lightB > 150){
+    if(stop_flagB == false){
+      delay(500);
+      digitalWrite(relayB, LOW);
+      stop_flagB = true;
+    }
+    if(stop_flagB == true){
+      digitalWrite(relayB, LOW);
+    }
+    
+  }
+  else{
+    stop_flagB = false;
+    digitalWrite(relayB, HIGH);
   }  
 }
