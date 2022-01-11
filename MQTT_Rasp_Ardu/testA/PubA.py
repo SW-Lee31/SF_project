@@ -6,6 +6,7 @@ import paho.mqtt.client as mqtt_client
 
 BORKER_ADDR = '192.168.0.32'
 PORT_RPI = 1883
+TOPIC_CON = 'ToB/conn'
 TOPIC = 'ToB/productA'
 TOPIC_R = 'ToB/productA/R'
 TOPIC_B = 'ToB/productA/B'
@@ -49,6 +50,15 @@ def publish(client, msg, Rval, Bval, Gval, Yval):
     else:
         print(f"failed to send message")
 
+def conn_pub(client, msg):
+    result = client.publish(TOPIC_CON, msg)
+    status = result[0]
+
+    if status == 0:
+        if msg != '':
+            print('conn Publish success!')
+    else:
+        print(f"failed to send conn message")
 
 def run(client, PAData):
     # pub = connect_mqtt()
@@ -59,3 +69,6 @@ def run(client, PAData):
 
     # print('Pub val', cntData)
     publish(client, cntData, PAData[0], PAData[1], PAData[2], PAData[3])
+
+def conn_run(client, msg):
+    conn_pub(client, msg)

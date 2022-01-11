@@ -15,9 +15,9 @@ void setup() {
 void loop() {
   int lightA = analogRead(cdsA);
   int lightB = analogRead(cdsB);
-  Serial.print('A ');
+  Serial.print('A');
   Serial.print(lightA);
-  Serial.print('B ');
+  Serial.print('B');
   Serial.println(lightB);
   
   
@@ -39,7 +39,7 @@ void loop() {
 
   if (lightB > 150){
     if(stop_flagB == false){
-      delay(500);
+      delay(300);
       digitalWrite(relayB, LOW);
       stop_flagB = true;
     }
@@ -53,5 +53,4 @@ void loop() {
     digitalWrite(relayB, HIGH);
   }  
 
-  
 }

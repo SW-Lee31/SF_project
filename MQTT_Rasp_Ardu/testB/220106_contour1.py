@@ -55,10 +55,10 @@ while True:
     kernel = np.ones((5, 5))
     imgDil = cv2.dilate(imgCanny, kernel, iterations=1)
 
-    #app = getContours(imgDil, imgContour)[0]
-    #ar = getContours(imgDil, imgContour)[1]
+    app = getContours(imgDil, imgContour)[0]
+    ar = getContours(imgDil, imgContour)[1]
     
-    app, ar = getContours(imgDil, imgContour)
+    #app, ar = getContours(imgDil, imgContour)
     
     #check(app, ar)
     print('app: ', app)

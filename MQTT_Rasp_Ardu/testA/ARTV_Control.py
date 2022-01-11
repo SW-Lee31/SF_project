@@ -9,7 +9,7 @@ import Ctrl as Rc
 from multiprocessing import Process
 
 # 제품 A에 대한 저장 리스트 초기화
-PAData = [0, 0, 0, 0]
+PAData = [1, 0, 0, 0]
 # PB에서 받은 데이터 저장 global 변수 초기화
 PBData = 'null'
 # Vision - blue를 2번 씩 읽음(예외처리 -> 내부 cnt{2})
@@ -78,7 +78,7 @@ def read_Vision():
             cnt[3] = 0
         print(cnt)
 
-    #Pub.run(publisher, PAData)
+    Pub.run(publisher, PAData)
     vision_data.start()
 
 def read_flag():

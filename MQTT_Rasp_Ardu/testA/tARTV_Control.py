@@ -10,7 +10,7 @@ from multiprocessing import Process
 import asyncio
 
 # 제품 A에 대한 저장 리스트 초기화
-PAData = [1, 0, 0, 0]
+PAData = [0, 0, 0, 0]
 
 # PB에서 받은 데이터 저장 global 변수 초기화
 PBData = 'null'
@@ -21,6 +21,7 @@ buff_cnt = 0
 
 # Publisher객체 생성 및 브로커 연결
 publisher = Pub.connect_mqtt()
+#Pub.conn_run(publisher, 'Activated')
 
 # Subscriber객체 생성 및 브로커 연결
 sub = Sub.connect_mqtt()
@@ -60,34 +61,38 @@ def read_Vision():
 
     if Vbuffer != []:
         if Vbuffer[0] == 'red':
-            #print(Vbuffer)
+            print(Vbuffer)
             asyncio.run(robot_action(Vbuffer[0]))
             PAData[0] += 1
             del Vbuffer[0]
-            #print(Vbuffer)
+            Pub.run(publisher, PAData)
+            print(Vbuffer)
             # Rc_red_task = asyncio.create_task(robot_action(Vi.processCam()))
         elif Vbuffer[0] == 'blue':
             #print(Vbuffer)
             asyncio.run(robot_action(Vbuffer[0]))
             PAData[1] += 1
             del Vbuffer[0]
+            Pub.run(publisher, PAData)
             #print(Vbuffer)
         elif Vbuffer[0] == 'green':
             #print(Vbuffer)
             asyncio.run(robot_action(Vbuffer[0]))
             PAData[2] += 1
             del Vbuffer[0]
+            Pub.run(publisher, PAData)
             #print(Vbuffer)
         elif Vbuffer[0] == 'yellow':
             #print(Vbuffer)
             asyncio.run(robot_action(Vbuffer[0]))
             PAData[3] += 1
             del Vbuffer[0]
+            Pub.run(publisher, PAData)
             #print(Vbuffer)
         else:
             pass
 
-    Pub.run(publisher, PAData)
+
     vision_data.start()
 
 def read_flag():
@@ -128,6 +133,9 @@ if __name__ == '__main__':
         #asyncio.run(Rt())
         # Pub.run()
     except KeyboardInterrupt:
+        Pub.conn_run(publisher, 'Deactivated')
+        Vision_P.join()
+        ReadB_P.join()
         print('키보드 인터럽트 발생')
         sock.close()
         print('서버 강제 종료')

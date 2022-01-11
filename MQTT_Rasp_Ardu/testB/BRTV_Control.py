@@ -5,18 +5,19 @@ import sys
 import time
 import SubB as Sub
 import PubB as Pub
-# from SubB import rcv_msg
+from SubB import rcv_msg
 import Vision as Vi
 import Ctrl as Rc
 from multiprocessing import Process
 import ctrl_PWM_servo as Servo
 
 
-PB_value = [0, 0, 0]
 
+#PAData = []
 
 # Publisher객체 생성 및 브로커 연결
 publisher = Pub.connect_mqtt()
+Pub.conn_run(publisher, 'Activated')
 
 # Subscriber객체 생성 및 브로커 연결
 sub = Sub.connect_mqtt()
@@ -41,23 +42,49 @@ def read_fromPA():
     sub.loop_stop()
     global PAData
     PAData = parse_Adata(Sub.return_data())
-    #print(PAData)
+    # print(rcv_msg)
 
     if PAData[0] != '':
+        sendmsg = [0, 0, 0]
         red = PAData[0]
         blue = PAData[1]
         green = PAData[2]
-        print(red, blue, green)
+        print(f'received {PAData[0]}, {PAData[1]}, {PAData[2]}')
+
+        if int(red) >= 1:
+            asyncio.run(robot_control('red'))
+            PAData[0] = int(PAData[0]) - 1
+            sendmsg[0] += 1
+            Pub.run(publisher, sendmsg)
+        elif int(blue) >= 1:
+            asyncio.run(robot_control('blue'))
+            PAData[1] = int(PAData[1]) - 1
+            sendmsg[1] += 1
+            Pub.run(publisher, sendmsg)
+        elif int(green) >= 1:
+            asyncio.run(robot_control('green'))
+            PAData[2] = int(PAData[2]) - 1
+            sendmsg[2] += 1
+            Pub.run(publisher, sendmsg)
+
+        print(f'updated {PAData[0]}, {PAData[1]}, {PAData[2]}')
+
 
 
     sub_act.start()
+
 
 def parse_Adata(data):
     PAdata = data.split('/')
     return PAdata
 
-async def robot_control():
-    await Rc.work_red()
+async def robot_control(color_value):
+    if color_value == 'red':
+        await Rc.work_red()
+    elif color_value == 'blue':
+        await Rc.work_blue()
+    elif color_value == 'green':
+        await Rc.work_green()
 
 def read_Vision():
     update_val = threading.Timer(.5, read_Vision)
@@ -76,13 +103,13 @@ def read_Vision():
 
 if __name__ == '__main__':
     try:
-        asyncio.run(robot_control())
         ReadA_P = Process(target=read_fromPA)
         Vision_P = Process(target=read_Vision)
         ReadA_P.start()
         Vision_P.start()
         # Pub.run()
     except KeyboardInterrupt:
+        Pub.conn_run(publisher, 'Deactivated')
         print('키보드 인터럽트 발생')
         print('서버 강제 종료')
         sys.exit()
