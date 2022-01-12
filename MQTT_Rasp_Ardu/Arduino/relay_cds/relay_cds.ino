@@ -23,7 +23,7 @@ void loop() {
   
   if (lightA > 150){
     if(stop_flagA == false){
-      delay(500);
+      delay(300);
       digitalWrite(relayA, LOW);
       stop_flagA = true;
     }
@@ -39,7 +39,7 @@ void loop() {
 
   if (lightB > 150){
     if(stop_flagB == false){
-      delay(500);
+      delay(300);
       digitalWrite(relayB, LOW);
       stop_flagB = true;
     }

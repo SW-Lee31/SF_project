@@ -1,11 +1,7 @@
 import cv2
 import numpy as np
 
-frameWidth = 640
-frameHeight = 480
-cap = cv2.VideoCapture(0)
-cap.set(3, frameWidth)
-cap.set(4, frameHeight)
+one = 1
 
 def empty(a):
     pass
@@ -28,14 +24,12 @@ def getContours(img, imgContour):
             ar = area
             return [app, ar]
 
-
-
 def cheakArea():
     threshold1 = 30
     threshold2 = 30
     ret, img = cap.read()
     imgContour = img.copy()
-    imgroi = img[0:480, 120:520].copy()
+    imgroi = img[0:480, 180:460].copy()
     imgBlur = cv2.GaussianBlur(imgroi, (7, 7), 1)
     imgGray = cv2.cvtColor(imgBlur, cv2.COLOR_BGR2GRAY)
     imgCanny = cv2.Canny(imgGray, threshold1, threshold2)
@@ -48,6 +42,12 @@ def cheakArea():
         if app == 4 and ar >49000:
             return True
         else:
+            #불량시 경로 /home/pi/cap/에 캡쳐후 저장
+            cv2.imwrite("/home/pi/cap/"+str(one)+".png",img)            
             return False
     else:
         pass
+
+# 동영상 닫기 후 메모리 해제
+def end():
+    cap.release()

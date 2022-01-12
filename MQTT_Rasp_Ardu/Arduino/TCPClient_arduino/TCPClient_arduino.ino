@@ -2,8 +2,8 @@
 #include <SoftwareSerial.h>
 
 // Wifi 세팅
-SoftwareSerial Serial1(2, 3);
-IPAddress serverIP(192,168,0,135);
+SoftwareSerial Serial1(7, 8);
+IPAddress serverIP(192,168,0,32);
 WiFiEspClient client;
 
 char ssid[] = "iptime";
@@ -21,13 +21,13 @@ void setup(void)
     
       // 접속 시도
       while (status != WL_CONNECTED){
-        Serial.print("Attempting to connect to WPA SSID:");
+        Serial.print("Attempting to connect to WPA SSID: ");
         Serial.print(ssid);
         status = WiFi.begin(ssid, pass);
       }
     
       Serial.println("You're connected to the network");
-      client.connect(serverIP,8000);
+      client.connect(serverIP,8787);
 }
  
 void loop(void)

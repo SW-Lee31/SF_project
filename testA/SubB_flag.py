@@ -10,6 +10,7 @@ port = 1883
 from_topic = 'ToB/productA'
 sub_id = f'B_sub'
 rcv_msg = ''
+rcv_msg2 = ''
 
 # MQTT 연결 콜백함수
 def connect_mqtt() -> mqtt_client:
@@ -35,21 +36,11 @@ def on_message(client, userdata, msg):
     global rcv_msg
     #rcv_msg = f"Received/ '{msg.payload.decode()}' /from '{msg.topic}' topic"
     rcv_msg = msg.payload.decode()
-
-
-
-    # Pub에서 값은 한 번 보내지만, Sub에서 갱신된 전역변수를 계속 호출(B에서의 필요 이상 로봇 동작 발생) -> 전역변수 초기화 필요
     # client.loop_stop()
-
 
 ### 전역변수 call  함수 -> on_message는 Call back함수(return 불가)
 def return_data():
-    #print(rcv_msg)
-    global rcv_msg
-    temp = rcv_msg
-    print('temp in sub', temp)
-    rcv_msg = ''
-    return temp
+    return rcv_msg
 
 
 # 구독 연결 콜백함수
@@ -62,6 +53,5 @@ def run(client):
     # client.loop_stop()
     # Loop (내장 스레드)
     #sub.loop_forever()
-
 
 

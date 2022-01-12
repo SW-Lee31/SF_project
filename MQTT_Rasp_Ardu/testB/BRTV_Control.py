@@ -10,7 +10,7 @@ import Vision as Vi
 import Ctrl as Rc
 from multiprocessing import Process
 import ctrl_PWM_servo as Servo
-
+import signal
 
 
 #PAData = []
@@ -32,7 +32,7 @@ def Adata_read():
     read_dataA.start()
 '''
 def read_fromPA():
-    sub_act = threading.Timer(1, read_fromPA)
+    sub_act = threading.Timer(2, read_fromPA)
 
     ### !!!!python에서는 loop 내 global 변수를 holding 하는 문제 발생
     ### MQTT 내 loop시작, 끝 지정 loop에서 global 갱신
@@ -42,7 +42,7 @@ def read_fromPA():
     sub.loop_stop()
     global PAData
     PAData = parse_Adata(Sub.return_data())
-    # print(rcv_msg)
+    #print('temp received', rcv_msg)
 
     if PAData[0] != '':
         sendmsg = [0, 0, 0]
@@ -108,8 +108,10 @@ if __name__ == '__main__':
         ReadA_P.start()
         Vision_P.start()
         # Pub.run()
-    except KeyboardInterrupt:
+        signal.pause()
+    except (KeyboardInterrupt, SystemExit):
         Pub.conn_run(publisher, 'Deactivated')
         print('키보드 인터럽트 발생')
         print('서버 강제 종료')
+        Vi.end()
         sys.exit()

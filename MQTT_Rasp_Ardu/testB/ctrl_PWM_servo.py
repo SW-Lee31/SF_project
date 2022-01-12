@@ -18,12 +18,12 @@ async def servo_activate(act_code):
     if(act_code == 1):
         Arm.Arm_PWM_servo_write(0, 110)
     else:
-        await asyncio.sleep(4)
+        await asyncio.sleep(.5)
         Arm.Arm_PWM_servo_write(0, 160)
         await asyncio.sleep(1)
 
 # 110 ~ 160
-'''    
+'''
 try :
     main()
 except KeyboardInterrupt:
