@@ -71,7 +71,9 @@ def read_Vision():
     if Vbuffer != []:
         if Vbuffer[0] == 'red':
             #print(Vbuffer)
+            Pub.ro_run(publisher, True)
             asyncio.run(robot_action(Vbuffer[0]))
+            Pub.ro_run(publisher, False)
             PAData[0] += 1
             PATotal[0] += 1
             del Vbuffer[0]
@@ -81,7 +83,9 @@ def read_Vision():
             # Rc_red_task = asyncio.create_task(robot_action(Vi.processCam()))
         elif Vbuffer[0] == 'blue':
             #print(Vbuffer)
+            Pub.ro_run(publisher, True)
             asyncio.run(robot_action(Vbuffer[0]))
+            Pub.ro_run(publisher, False)
             PAData[1] += 1
             PATotal[1] += 1
             del Vbuffer[0]
@@ -90,7 +94,9 @@ def read_Vision():
             PAData[1] -= 1
         elif Vbuffer[0] == 'green':
             #print(Vbuffer)
+            Pub.ro_run(publisher, True)
             asyncio.run(robot_action(Vbuffer[0]))
+            Pub.ro_run(publisher, False)
             PAData[2] += 1
             PATotal[2] += 1
             del Vbuffer[0]
@@ -99,7 +105,9 @@ def read_Vision():
             PAData[2] -= 1
         elif Vbuffer[0] == 'yellow':
             #print(Vbuffer)
+            Pub.ro_run(publisher, True)
             asyncio.run(robot_action(Vbuffer[0]))
+            Pub.ro_run(publisher, False)
             PAData[3] += 1
             PATotal[3] += 1
             del Vbuffer[0]
@@ -108,7 +116,6 @@ def read_Vision():
             PAData[3] -= 1
         else:
             pass
-
 
     vision_data.start()
 

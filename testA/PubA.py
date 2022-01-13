@@ -7,33 +7,24 @@ import paho.mqtt.client as mqtt_client
 BORKER_ADDR = '192.168.0.32'
 PORT_RPI = 1883
 
-# 장치 정보(conveyor)
-TOPIC_CON = 'FromA/con/conn'
+# 장치 정보(conveyorAB)
+TOPIC_CON_A = 'FromA/conA/conn'
+TOPIC_CON_B = 'FromA/conB/conn'
+
+# 장치 정보(Robot)
 TOPIC_ROB = 'FromA/rob/conn'
 
-# vision 정보
+# 장치 정보(vision)
 TOPIC_VI_R = 'FromA/vi/r'
 TOPIC_VI_G = 'FromA/vi/g'
 TOPIC_VI_B = 'FromA/vi/b'
 TOPIC_VI_Y = 'FromA/vi/y'
 
-# 로봇 시작 정보
-TOPIC_ROB_R = 'FromA/rob/r'
-TOPIC_ROB_B = 'FromA/rob/b'
-TOPIC_ROB_G = 'FromA/rob/g'
-TOPIC_ROB_Y = 'FromA/rob/y'
-
 # increase vision value
-vi_red_cnt = 1
-vi_blue_cnt = 1
-vi_green_cnt = 1
-vi_yellow_cnt = 1
-
-# increase robot value
-ro_red_cnt = 1
-ro_blue_cnt = 1
-ro_green_cnt = 1
-ro_yellow_cnt = 1
+vi_red_cnt = 0
+vi_blue_cnt = 0
+vi_green_cnt = 0
+vi_yellow_cnt = 0
 
 # A공정 이후 value 전달
 TOPIC = 'ToB/productA'
@@ -84,14 +75,27 @@ def publish(client, msg, Rval, Bval, Gval, Yval):
         print(f"failed to send message")
 
 
-# conveyor 정보 송신 (아두이노 TCP/IP 통신으로 데이터 조회 이후)
-def conn_pub(client, msg):
-    result = client.publish(TOPIC_CON, msg)
+# conveyorA 정보 송신 (아두이노 TCP/IP 통신으로 데이터 조회 이후)
+def connA_pub(client, msg):
+    result = client.publish(TOPIC_CON_A, msg)
     status = result[0]
 
     if status == 0:
-        if msg != '':
-            print('conn Publish success!')
+        pass
+        #if msg != '':
+            #print('conn Publish success!')
+    else:
+        print(f"failed to send conn message")
+
+# conveyorB 정보 송신 (아두이노 TCP/IP 통신으로 데이터 조회 이후)
+def connB_pub(client, msg):
+    result = client.publish(TOPIC_CON_B, msg)
+    status = result[0]
+
+    if status == 0:
+        pass
+        #if msg != '':
+            #print('conn Publish success!')
     else:
         print(f"failed to send conn message")
 
@@ -99,96 +103,63 @@ def conn_pub(client, msg):
 def vi_pub(client, msg):
     if msg == 'vred':
         global vi_red_cnt
+        vi_red_cnt += 1
         result = client.publish(TOPIC_VI_R, vi_red_cnt)
         status = result[0]
 
         if status == 0:
             if msg != '':
-                print('vi Publish success!')
-                vi_red_cnt += 1
+                #print('vi Publish success!')
+                pass
         else:
             print("failed to send vi message")
     elif msg == 'vblue':
         global vi_blue_cnt
+        vi_blue_cnt += 1
         result = client.publish(TOPIC_VI_B, vi_blue_cnt)
         status = result[0]
 
         if status == 0:
             if msg != '':
-                print('vi Publish success!')
-                vi_blue_cnt += 1
+                #print('vi Publish success!')
+                pass
         else:
             print("failed to send vi message")
     elif msg == 'vgreen':
         global vi_green_cnt
+        vi_green_cnt += 1
         result = client.publish(TOPIC_VI_G, vi_green_cnt)
         status = result[0]
 
         if status == 0:
             if msg != '':
-                print('vi Publish success!')
-                vi_green_cnt += 1
+                #print('vi Publish success!')
+                pass
         else:
             print("failed to send vi message")
     elif msg == 'vdetected':
         global vi_yellow_cnt
+        vi_yellow_cnt += 1
         result = client.publish(TOPIC_VI_Y, vi_yellow_cnt)
         status = result[0]
 
         if status == 0:
             if msg != '':
-                print('vi Publish success!')
-                vi_yellow_cnt += 1
+                #print('vi Publish success!')
+                pass
         else:
             print("failed to send vi message")
     else:
         pass
 
-def ro_pub(msg):
-    if msg == 'rred':
-        global ro_red_cnt
-        result = client.publish(TOPIC_VI_R, ro_red_cnt)
-        status = result[0]
+def ro_pub(client, msg):
+    result = client.publish(TOPIC_ROB, msg)
+    status = result[0]
 
-        if status == 0:
-            if msg != '':
-                print('ro Publish success!')
-                ro_red_cnt += 1
-        else:
-            print("failed to send ro message")
-    elif msg == 'rblue':
-        global ro_blue_cnt
-        result = client.publish(TOPIC_VI_R, ro_blue_cnt)
-        status = result[0]
-
-        if status == 0:
-            if msg != '':
-                print('ro Publish success!')
-                ro_blue_cnt += 1
-        else:
-            print("failed to send ro message")
-    elif msg == 'rgreen':
-        global ro_green_cnt
-        result = client.publish(TOPIC_VI_R, ro_green_cnt)
-        status = result[0]
-
-        if status == 0:
-            if msg != '':
-                print('ro Publish success!')
-                ro_green_cnt += 1
-        else:
-            print("failed to send ro message")
-    elif msg == 'ryellow':
-        global ro_yellow_cnt
-        result = client.publish(TOPIC_VI_R, ro_yellow_cnt)
-        status = result[0]
-
-        if status == 0:
-            if msg != '':
-                print('ro Publish success!')
-                ro_yellow_cnt += 1
-        else:
-            print("failed to send ro message")
+    if status == 0:
+        pass
+    else:
+        print("failed to send ro message")
 
 def run(client, PAData, PATotal):
     # pub = connect_mqtt()
@@ -200,8 +171,11 @@ def run(client, PAData, PATotal):
     # print('Pub val', cntData)
     publish(client, cntData, PATotal[0], PATotal[1], PATotal[2], PATotal[3])
 
-def con_run(client, msg):
-    conn_pub(client, msg)
+def conA_run(client, msg):
+    connA_pub(client, msg)
+
+def conB_run(client, msg):
+    connB_pub(client, msg)
 
 def vi_run(client, msg):
     vi_pub(client, msg)

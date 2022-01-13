@@ -33,23 +33,28 @@ def broadcastUser(cli_sock, pub_client):
         try:
             data = cli_sock.recv(BUF_SIZE)
             if data:
-                print(data)
+                #print(data)
                 if data.decode() == 'Conv_A Act':
-                    Pub.con_run(pub_client, True)
-                    print('send1')
+                    Pub.conA_run(pub_client, True)
+                    #print('send1')
                 elif data.decode() == 'Conv_A Dead':
-                    Pub.con_run(pub_client, False)
-                    print('send0')
+                    Pub.conA_run(pub_client, False)
+                    #print('send0')
+                elif data.decode() == 'Conv_B Act':
+                    Pub.conB_run(pub_client, False)
+                elif data.decode() == 'Conv_B Dead':
+                    Pub.conB_run(pub_client, False)
                 #bUser(cli_sock, data)
         except Exception as x:
             print('recv 에러: ', x)
             break
 
+'''
 def bUser(cs_sock, msg):
     for client in connList:
         try:
             if (msg.decode() == 'fEnd'):
-                print('fEnd: ', client);
+                print('fEnd: ', client)
                 connList.remove(client)
                 continue
             """if client != cs_sock:
@@ -58,3 +63,4 @@ def bUser(cs_sock, msg):
         except Exception as x:
             print('send 에러: ', x)
             break
+'''
